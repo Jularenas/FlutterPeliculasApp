@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:peliculas_app/src/models/actor_model.dart';
 import 'package:peliculas_app/src/models/pelicula_model.dart';
+import 'package:peliculas_app/src/models/person_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -86,5 +87,27 @@ class PeliculasProvider {
         {'api_key': _apiKey, 'language': _language, 'query': query});
 
     return await _processRequest(url);
+  }
+
+  Future<Person> obtenerPersona(int personId) async {
+    print("el id de la persona es: $personId");
+    final url = Uri.https(_url, '3/person/${personId.toString()}', {
+      'api_key': _apiKey,
+      'language': _language,
+    });
+    final resp = await http.get(url);
+
+    final decoded = json.decode(resp.body);
+
+    print(resp.body);
+
+    if (decoded['status_code'] == 34) {
+      return new Person();
+    }
+    print("aaaaaaa");
+    final person = Person.fromJson(decoded);
+    print(person);
+
+    return person;
   }
 }

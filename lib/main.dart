@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas_app/src/pages/actor_detail.dart';
 import 'package:peliculas_app/src/pages/home_page.dart';
 import 'package:peliculas_app/src/pages/pelicula_detailed.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (BuildContext context) => HomePage(),
         'detailed': (BuildContext context) => DetailedPelicula(),
+        'act-detailed': (BuildContext context) => ActorDetailed()
       },
     );
   }

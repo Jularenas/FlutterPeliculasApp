@@ -19,6 +19,7 @@ class Actor {
   String name;
   int order;
   String profilePath;
+  String genderString;
 
   Actor({
     this.castId,
@@ -40,6 +41,7 @@ class Actor {
     name = json["name"];
     order = json["order"];
     profilePath = json["profile_path"];
+    genderString = gender == 1 ? 'Female' : 'Male';
   }
 
   getFoto() {

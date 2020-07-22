@@ -24,7 +24,7 @@ class DetailedPelicula extends StatelessWidget {
             _descripcion(pelicula),
             _descripcion(pelicula),
             _descripcion(pelicula),
-            _cast(pelicula)
+            _cast(pelicula, context)
           ]))
         ],
       ),
@@ -115,7 +115,7 @@ class DetailedPelicula extends StatelessWidget {
     );
   }
 
-  Widget _cast(Pelicula pelicula) {
+  Widget _cast(Pelicula pelicula, BuildContext context) {
     final peliculasProvider = new PeliculasProvider();
 
     return FutureBuilder(
@@ -123,7 +123,7 @@ class DetailedPelicula extends StatelessWidget {
       //initialData: [],
       builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
         if (snapshot.hasData) {
-          return _crearActoresPageView(snapshot.data);
+          return _crearActoresPageView(snapshot.data, context);
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -133,13 +133,13 @@ class DetailedPelicula extends StatelessWidget {
     );
   }
 
-  Widget _crearActoresPageView(List<Actor> actores) {
+  Widget _crearActoresPageView(List<Actor> actores, BuildContext context) {
     return SizedBox(
       height: 200.0,
       child: PageView.builder(
         pageSnapping: false,
         itemBuilder: (BuildContext context, int index) {
-          return _actor(actores[index]);
+          return _actor(actores[index], context);
         },
         itemCount: actores.length,
         controller: PageController(viewportFraction: 0.3, initialPage: 1),
@@ -147,27 +147,33 @@ class DetailedPelicula extends StatelessWidget {
     );
   }
 
-  Widget _actor(Actor actor) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: FadeInImage(
-                  height: 150.0,
-                  fit: BoxFit.cover,
-                  placeholder: AssetImage("assets/img/loading.gif"),
-                  image: NetworkImage(actor.getFoto())),
+  Widget _actor(Actor actor, BuildContext context) {
+    print(actor.id);
+    return GestureDetector(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: FadeInImage(
+                    height: 150.0,
+                    fit: BoxFit.cover,
+                    placeholder: AssetImage("assets/img/loading.gif"),
+                    image: NetworkImage(actor.getFoto())),
+              ),
             ),
-          ),
-          Text(
-            actor.name,
-            overflow: TextOverflow.ellipsis,
-          )
-        ],
+            Text(
+              actor.name,
+              overflow: TextOverflow.ellipsis,
+            )
+          ],
+        ),
       ),
+      onTap: () {
+        Navigator.pushNamed(context, 'act-detailed', arguments: actor);
+      },
     );
   }
 }
